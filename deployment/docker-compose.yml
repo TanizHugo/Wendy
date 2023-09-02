@@ -1,0 +1,39 @@
+version: '3'
+services:
+  python:
+    build:
+      context: .
+      dockerfile: python-dockerfile
+    image: wendy-python-image:latest
+    container_name: wendy-python-container
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./python:/opt/wendy/python
+    depends_on:
+      - mysql
+
+  mysql:
+    build:
+      context: .
+      dockerfile: mysql-dockerfile
+    image: wendy-mysql-image:latest
+    container_name: wendy-mysql-container
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-db:/docker-entrypoint-initdb.d
+
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx-dockerfile  
+    image: wendy-nginx-image:latest
+    container_name: wendy-nginx-container
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/cert:/opt/wendy/nginx/cert
+      - ./nginx/web:/opt/wendy/nginx/web

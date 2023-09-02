@@ -1,0 +1,19 @@
+# 创建Nginx容器
+# 使用官方的 Nginx 镜像作为基础镜像
+FROM nginx:latest
+
+# 将自定义的 Nginx 配置文件复制到容器内
+COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+
+# 将证书复制到容器内
+COPY ./nginx/cert /opt/wendy/nginx/cert
+
+# 将项目复制到容器内
+COPY ./nginx/web /opt/wendy/nginx/web
+
+# 暴露 Nginx 的默认 HTTP 端口
+EXPOSE 80
+EXPOSE 443
+
+# 在容器启动时运行 Nginx 服务器
+CMD ["nginx", "-g", "daemon off;"]

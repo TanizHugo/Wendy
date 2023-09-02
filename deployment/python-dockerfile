@@ -1,0 +1,21 @@
+#创建python-dockerfile
+# 使用 Python 3.6 镜像作为基础镜像
+FROM python:3.6
+
+# 更新 pip
+RUN pip install --upgrade pip
+
+# 设置工作目录
+WORKDIR /opt/wendy/python
+
+# 复制项目文件到容器中
+COPY ./python /opt/wendy/python
+
+# 安装项目依赖
+RUN pip install -r requirements.txt
+
+# 对外暴露 8000 端口（Django需要）
+EXPOSE 8000
+
+# 在容器启动时运行的命令
+CMD python3 manage.py runserver 0.0.0.0:8000
